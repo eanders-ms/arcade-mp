@@ -5,12 +5,12 @@
         "device": "*"
     },
     "files": [
-        "main.blocks",
-        "main.ts",
         "README.md",
         "assets.json",
-        "custom.ts",
-        "stateKind.ts"
+        "stateKind.ts",
+        "fieldEditors.ts",
+        "player.ts",
+        "images.ts"
     ],
     "testFiles": [
         "test.ts"
