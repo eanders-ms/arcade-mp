@@ -6,13 +6,13 @@ namespace mp {
     const MAX_PLAYERS = 4;
 
     export enum PlayerSlot {
-        //% block="1"
+        //% block="player 1"
         One = 1,
-        //% block="2"
+        //% block="player 2"
         Two = 2,
-        //% block="3"
+        //% block="player 3"
         Three = 3,
-        //% block="4"
+        //% block="player 4"
         Four = 4
     }
 
@@ -58,6 +58,18 @@ namespace mp {
 
         constructor(index: number) {
             this._index = index;
+        }
+
+        //% group="Properties" blockSetVariable="myPlayer"
+        //% blockCombine block="index"
+        get index(): number {
+            return this._index;
+        }
+
+        //% group="Properties" blockSetVariable="myPlayer"
+        //% blockCombine block="slot"
+        get slot(): number {
+            return this._index + 1;
         }
 
         //% blockId=mp_getPlayerSprite
@@ -115,6 +127,14 @@ namespace mp {
                 default: return undefined;
             }
         }
+    }
+
+    //% blockId=mp_getPlayerBySlot
+    //% block="$slot"
+    export function getPlayerBySlot(slot: PlayerSlot): Player {
+        const index = slot - 1;
+        if (index < 0 || index >= MAX_PLAYERS) return undefined;
+        return _mpstate().players[index];
     }
 
     class MPState {
