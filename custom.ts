@@ -72,11 +72,16 @@ namespace mp {
             return this._index + 1;
         }
 
+        //% group="Sprites"
         //% blockId=mp_getPlayerSprite
+        //% block="%player(myPlayer) sprite"
         getSprite(): Sprite {
             return this._sprite;
         }
 
+        //% group="Sprites"
+        //% blockId=mp_setPlayerSprite
+        //% block="set %player(myPlayer) sprite to %spr"
         setSprite(spr: Sprite) {
             this._sprite = spr;
         }
