@@ -43,6 +43,11 @@ namespace mp {
         }
     }
 
+    class ControllerEventHandler {
+        constructor(public event: ControllerEvent, public handler: (player: Player) => void) {
+        }
+    }
+
     class ScoreHandler {
         constructor(public target: number, public handler: (player: Player) => void) {
         }
@@ -51,7 +56,6 @@ namespace mp {
     /**
      * A player in the game
      */
-    //% block="Player"
     export class Player {
         _sprite: Sprite;
         _state: number[];
@@ -156,6 +160,7 @@ namespace mp {
     class MPState {
         players: Player[];
         buttonHandlers: ButtonHandler[];
+        controllerEventHandlers: ControllerEventHandler[];
         scoreHandlers: ScoreHandler[];
         lifeZeroHandler: (player: Player) => void;
         indicatorsVisible: boolean;
@@ -166,6 +171,7 @@ namespace mp {
             for (let i = 0; i < MAX_PLAYERS; ++i)
                 this.players.push(new Player(i));
             this.buttonHandlers = [];
+            this.controllerEventHandlers = [];
             this.scoreHandlers = [];
             this.indicatorsVisible = false;
         }
@@ -183,6 +189,23 @@ namespace mp {
             for (const player of this.players) {
                 getButton(player._getController(), button).onEvent(event, () => {
                     this.getButtonHandler(button, event).handler(player);
+                })
+            }
+        }
+
+        onControllerEvent(event: ControllerEvent, handler: (player: Player) => void) {
+            const existing = this.getControllerEventHandler(event);
+
+            if (existing) {
+                existing.handler = handler;
+                return;
+            }
+
+            this.controllerEventHandlers.push(new ControllerEventHandler(event, handler));
+
+            for (const player of this.players) {
+                player._getController().onEvent(event, () => {
+                    this.getControllerEventHandler(event).handler(player);
                 })
             }
         }
@@ -226,15 +249,23 @@ namespace mp {
         }
 
         getButtonHandler(button: MultiplayerButton, event: ControllerButtonEvent) {
-            for (const bHandler of this.buttonHandlers) {
-                if (bHandler.button === button && bHandler.event === event) return bHandler;
+            for (const handler of this.buttonHandlers) {
+                if (handler.button === button && handler.event === event) return handler;
             }
             return undefined;
         }
 
+        getControllerEventHandler(event: ControllerEvent) {
+            for (const handler of this.controllerEventHandlers) {
+                if (handler.event === event) return handler;
+            }
+            return undefined;
+        }
+
+
         getScoreHandler(score: number) {
-            for (const sHandler of this.scoreHandlers) {
-                if (sHandler.target === score) return sHandler;
+            for (const handler of this.scoreHandlers) {
+                if (handler.target === score) return handler;
             }
             return undefined;
         }
@@ -399,6 +430,17 @@ namespace mp {
         return getButton(player._getController(), button).isPressed();
     }
 
+    //% blockId=mp_onControllerEvent
+    //% block="on controller $event for $player"
+    //% draggableParameters=reporter
+    //% group=Controller
+    //% weight=70
+    //% blockGap=8
+    //% parts="multiplayer"
+    export function onControllerEvent(event: ControllerEvent, handler: (player: Player) => void) {
+        _mpstate().onControllerEvent(event, handler);
+    }
+
     //% blockId=mp_getPlayerState
     //% block="$player $state"
     //% player.shadow=mp_getPlayerBySlot
@@ -498,7 +540,7 @@ namespace mp {
     //% block="$sprite player"
     //% sprite.shadow=variables_get
     //% sprite.defl=mySprite
-    //% parts="multiplayer"
+    //% group=Sprites
     //% weight=90
     //% blockGap=8
     //% parts="multiplayer"
