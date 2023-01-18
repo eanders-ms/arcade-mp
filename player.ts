@@ -431,7 +431,7 @@ namespace mp {
     }
 
     //% blockId=mp_onControllerEvent
-    //% block="on controller $event for $player"
+    //% block="on $player $event"
     //% draggableParameters=reporter
     //% group=Controller
     //% weight=70
