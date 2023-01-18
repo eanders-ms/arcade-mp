@@ -343,6 +343,7 @@ namespace mp {
     //% group=Sprites
     //% weight=100
     //% blockGap=8
+    //% parts="multiplayer"
     export function getPlayerSprite(player: Player): Sprite {
         return player.getSprite();
     }
@@ -354,6 +355,7 @@ namespace mp {
     //% group=Sprites
     //% weight=100
     //% blockGap=8
+    //% parts="multiplayer"
     export function setPlayerSprite(player: Player, sprite: Sprite) {
         player.setSprite(sprite);
     }
@@ -369,6 +371,8 @@ namespace mp {
     //% inlineInputMode=inline
     //% group=Controller
     //% weight=100
+    //% blockGap=8
+    //% parts="multiplayer"
     export function moveWithButtons(player: Player, vx?: number, vy?: number) {
         player.moveWithButtons(vx, vy);
     }
@@ -378,6 +382,8 @@ namespace mp {
     //% draggableParameters=reporter
     //% group=Controller
     //% weight=90
+    //% blockGap=8
+    //% parts="multiplayer"
     export function onButtonEvent(button: MultiplayerButton, event: ControllerButtonEvent, handler: (player: Player) => void) {
         _mpstate().onButtonEvent(button, event, handler);
     }
@@ -388,6 +394,7 @@ namespace mp {
     //% group=Controller
     //% weight=80
     //% blockGap=8
+    //% parts="multiplayer"
     export function isButtonPressed(player: Player, button: MultiplayerButton): boolean {
         return getButton(player._getController(), button).isPressed();
     }
@@ -399,6 +406,7 @@ namespace mp {
     //% group=Info
     //% weight=100
     //% blockGap=8
+    //% parts="multiplayer"
     export function getPlayerState(player: Player, state: number): number {
         return player.getState(state);
     }
@@ -410,6 +418,7 @@ namespace mp {
     //% group=Info
     //% weight=90
     //% blockGap=8
+    //% parts="multiplayer"
     export function setPlayerState(player: Player, state: number, value: number) {
         player.setState(state, value);
     }
@@ -421,6 +430,8 @@ namespace mp {
     //% deltaValue.defl=1
     //% group=Info
     //% weight=80
+    //% blockGap=8
+    //% parts="multiplayer"
     export function changePlayerStateBy(player: Player, state: number, delta: number) {
         player.setState(state, player.getState(state) + delta);
     }
@@ -431,6 +442,7 @@ namespace mp {
     //% group=Info
     //% weight=100
     //% blockGap=8
+    //% parts="multiplayer"
     export function getPlayerProperty(player: Player, prop: PlayerProperty): number {
         return player.getProperty(prop);
     }
@@ -442,6 +454,7 @@ namespace mp {
     //% group=Info
     //% weight=70
     //% blockGap=8
+    //% parts="multiplayer"
     export function onScore(score: number, handler: (player: Player) => void) {
         _mpstate().onReachedScore(score, handler);
     }
@@ -451,6 +464,8 @@ namespace mp {
     //% draggableParameters=reporter
     //% group=Info
     //% weight=60
+    //% blockGap=8
+    //% parts="multiplayer"
     export function onLifeZero(handler: (player: Player) => void) {
         _mpstate().onLifeZero(handler);
     }
@@ -460,6 +475,7 @@ namespace mp {
     //% group=Utility
     //% weight=80
     //% blockGap=8
+    //% parts="multiplayer"
     export function getPlayerBySlot(slot: PlayerSlot): Player {
         const index = slot - 1;
         return getPlayerByIndex(index);
@@ -472,6 +488,7 @@ namespace mp {
     //% group=Utility
     //% weight=80
     //% blockGap=8
+    //% parts="multiplayer"
     export function getPlayerByIndex(index: number): Player {
         if (index < 0 || index >= MAX_PLAYERS) return undefined;
         return _mpstate().players[index];
@@ -481,9 +498,10 @@ namespace mp {
     //% block="$sprite player"
     //% sprite.shadow=variables_get
     //% sprite.defl=mySprite
-    //% group=Sprites
+    //% parts="multiplayer"
     //% weight=90
     //% blockGap=8
+    //% parts="multiplayer"
     export function getPlayerBySprite(sprite: Sprite): Player {
         for (const player of _mpstate().players) {
             if (player.getSprite() === sprite) return player;
@@ -497,6 +515,8 @@ namespace mp {
     //% visible.defl=true
     //% group=Utility
     //% weight=100
+    //% blockGap=8
+    //% parts="multiplayer"
     export function setPlayerIndicatorsVisible(visible: boolean) {
         _mpstate().setPlayerIndicatorsVisible(visible);
     }
